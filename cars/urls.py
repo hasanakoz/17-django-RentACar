@@ -2,13 +2,14 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from .views import CarView, ReservationView
+from .views import CarView, ReservationView, ReservationDetailView
 
 router = routers.DefaultRouter()
 router.register('cars', CarView)
 
 urlpatterns = [
-    path('reservation/', ReservationView.as_view())
+    path('reservation/', ReservationView.as_view()),
+    path('reservation/<int:pk>/', ReservationDetailView.as_view())
 ]
 
 urlpatterns += router.urls
