@@ -23,12 +23,13 @@ class CarView(ModelViewSet):
         start = self.request.query_params.get('start')
         end = self.request.query_params.get('end')
 
-        cond1 = Q(start_date__lt=end)
-        cond2 = Q(end_date__gt=start)
-        not_available = Reservation.objects.filter(
-            cond1 & cond2
-        ).values_list('car_id', flat=True)
+        if start is not None or end is not None:
+            cond1 = Q(start_date__lt=end)
+            cond2 = Q(end_date__gt=start)
+            not_available = Reservation.objects.filter(
+                cond1 & cond2
+            ).values_list('car_id', flat=True)
 
-        queryset = queryset.exclude(id__in=not_available)
+            queryset = queryset.exclude(id__in=not_available)
 
         return queryset
